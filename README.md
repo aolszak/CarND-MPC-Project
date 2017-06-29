@@ -3,6 +3,56 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Project goal
+
+The goal of this project was to implement nonlinear MPC controller to driver through the track in a safe manner. The application is communicating with available simulator in order to track state of a virtual car and predict best possible state parameters in order to stay as close as possible to the reference trajectory and achieve lowest cost/error.
+
+## Kinematic model
+
+The kinematic model for this project was a bicycle model, which ignores dynamic effects like friction, inertia or torque. 
+
+The model is described by the following equations:
+
+```
+// Position coordinates
+x_[t+1] = x[t] + v[t] * cos(psi[t]) * dt;
+y_[t+1] = y[t] + v[t] * sin(psi[t]) * dt;
+
+// Heading direction
+psi_[t+1] = psi[t] + v[t] / Lf * delta[t] * dt;
+
+// Velocity
+v_[t+1] = v[t] + a[t] * dt;
+
+// Cross-track error
+cte[t+1] = f(x[t]) - y[t] + v[t] * sin(epsi[t]) * dt;
+
+// Orientation error
+epsi[t+1] = psi[t] - psides[t] + v[t] * delta[t] / Lf * dt;
+```
+
+Where Lf is a distance between the center of mass of the vehicle and the front wheels.
+
+Model was implemented in the "FG_eval" class.
+
+## Timestep and elapsed duration
+
+The timestep "N" and elapsed duration "dt" parameters were determining the prediction characteristic of future state. For every state from the simulator there are preformed calculations in order to predict best drive trajectory for "N" time steps and elapsed time "dt".
+
+The shorter prediction time is, the more accurate controller is - predicts more often vehicle state and reacts faster but also increases the computation time. The longer prediction time is, the more smooth reactions of the controller are and less computation resources needed. I decided to set timestep N=11 and elapsed time dt=0.050. Those parameters were enough accurate and were keeping the car always inside the lane and gave smooth drive feeling.
+
+## Polynomial fitting
+
+In order to fit the polynomial, coordinates where always converted to local vehicle coordinate system. Since the polynomial should be fit into the set of points, coordinates of the waypoints were calculated by using vehicle position shift and rotation.
+
+## MPC Latency
+
+One of the requirements of the project was to simulate the latency 100ms of the controller - in order to make usage of the controller more realistic as it would be used with hardware in the real car. The latency constraints were included in the "Solve" function in the "MPC". Using "latency_multiplier" variable I was overriding actuation values to keep them same for a period of 100ms (latency_multiplier * dt = 100ms).
+
+## Video preview
+
+<a href="https://vimeo.com/223594747" target="_blank">https://vimeo.com/223594747</a>
+
 ## Dependencies
 
 * cmake >= 3.5
