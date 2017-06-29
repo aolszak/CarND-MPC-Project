@@ -51,7 +51,7 @@ One of the requirements of the project was to simulate the latency 100ms of the 
 
 ## Video preview
 
-<a href="https://vimeo.com/223594747" target="_blank">https://vimeo.com/223594747</a>
+<a href="https://vimeo.com/223594747" target="_blank">Video url</a>
 
 ## Dependencies
 
