@@ -242,7 +242,6 @@ SolveVector MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // Actuator values
   SolveVector solveVector;
   for (auto i = 0; i < N-1 ; i++){
-    cout << i << ": " << "solution.x[x_start+i]: " << solution.x[x_start+i] << "solution.x[y_start+i]: " << solution.x[y_start+i] << endl;
     solveVector.x.push_back(solution.x[x_start+i]);
     solveVector.y.push_back(solution.x[y_start+i]);
     solveVector.steering.push_back(solution.x[delta_start+i]);
